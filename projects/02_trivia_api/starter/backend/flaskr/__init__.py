@@ -122,9 +122,10 @@ def create_app(test_config=None):
                 abort(404)
             else:
                 return jsonify({
+                    'success': True,
                     'totalQuestions': len(questions_query),
                     'questions': questions
-                })
+                }), 200
         elif 'question' in request_body:
             new_question = Question(question=request_body['question'],
                                     answer=request_body['answer'],
