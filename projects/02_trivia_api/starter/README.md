@@ -7,9 +7,16 @@ Welcome to my submission for the Udacity Trivia Project, I hope you find it usef
 ### Backend
 
 ### Database Setup
-With Postgres running, restore a database using the trivia.psql file provided. From the backend folder in terminal run:
+We need to start with a clean slate, so that the results are not influenced by unexpected data, and restore the databases from the provided trivia.psql file.
+
+From the backend folder in terminal run:
 
 ```bash
+sudo su postgres
+dropdb --if-exists trivia
+dropdb --if-exists trivia_test
+createdb trivia
+createdb trivia_test
 psql trivia < trivia.psql
 psql trivia_test < trivia.psql
 ```
