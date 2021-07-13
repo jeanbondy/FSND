@@ -5,8 +5,10 @@ from flask_cors import CORS
 import random
 from sqlalchemy import and_
 from models import setup_db, Question, Category
+import logging
 
 QUESTIONS_PER_PAGE = 10
+# logging.basicConfig(level=logging.DEBUG)
 
 
 def create_app(test_config=None):
@@ -84,11 +86,11 @@ def create_app(test_config=None):
     def delete_question(question_id):
         question = Question.query.filter_by(id=question_id).one_or_none()
         if question is None:
-            print('is none')
+            logging.debug(f'delete_question - id {question_id} is none')
             abort(404)
         else:
             try:
-                print('try delete')
+                logging.debug(f'delete_question - try delete id {question_id}')
                 Question.delete(question)
                 return jsonify({'message': 'resource deleted',
                                 'success': True}), 200
@@ -113,7 +115,16 @@ def create_app(test_config=None):
 
         if not request_body:
             abort(400)
+        '''
+        @TODO: 
+        Create a POST endpoint to get questions based on a search term. 
+        It should return any questions for whom the search term 
+        is a substring of the question. 
 
+        TEST: Search by any phrase. The questions list will update to include 
+        only question that include that string within their question. 
+        Try using the word "title" to start. 
+        '''
         if 'searchTerm' in request_body:
             search_term = (request_body['searchTerm'])
             questions_query = Question.query.filter(Question.question.ilike('%' + search_term + '%')).all()
@@ -139,29 +150,6 @@ def create_app(test_config=None):
         else:
             abort(400)
 
-    '''
-    @TODO: 
-    Create a POST endpoint to get questions based on a search term. 
-    It should return any questions for whom the search term 
-    is a substring of the question. 
-    
-    TEST: Search by any phrase. The questions list will update to include 
-    only question that include that string within their question. 
-    Try using the word "title" to start. 
-    '''
-
-    '''
-    @app.route('/questions', methods=['POST'])
-    def search_questions():
-        request_body = request.get_json()
-        search_term = (request_body['searchTerm'])
-        questions_query = Question.query.filter(Question.question.ilike('%' + search_term + '%')).all()
-        questions = [question.format() for question in questions_query]
-        return jsonify({
-            'totalQuestions': len(questions_query),
-            'questions': questions
-        })
-    '''
     '''
     @TODO: 
     Create a GET endpoint to get questions based on category. 
