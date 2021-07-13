@@ -90,7 +90,6 @@ python test_flaskr.py
 Errors are returned as JSON objects:
 
 ```js
-
 {
     "success": False, 
     "error": 404,
@@ -98,13 +97,11 @@ Errors are returned as JSON objects:
 }
 
 ```
-
+These are the error types the API will return when requests fail:
 - 400: Bad request
 - 404: Resource not found
 - 405: Method not allowed
 - 422: Unprocessable
-
-These are the error types the API will return when requests fail:
 
 
 ## Endpoints
@@ -115,7 +112,6 @@ These are the error types the API will return when requests fail:
 - - Sample: `curl http://192.168.0.1:5000/categories`
 
 ```js
-
 {
     "categories": {
         "1": "Science",
@@ -127,7 +123,6 @@ These are the error types the API will return when requests fail:
     },
     "success": true
 }
-
 ```
 
 ### GET /categories/{id}/questions
@@ -136,7 +131,6 @@ These are the error types the API will return when requests fail:
 - - Sample: `curl http://192.168.0.1:5000/categories/3/questions`
 
 ```js
-
 {
     "currentCategory": "Geography",
     "questions": [
@@ -158,9 +152,7 @@ These are the error types the API will return when requests fail:
     "success": true,
     "totalQuestions": 2
 }
-
 ```
-
 
 ### GET /questions
 - General:
@@ -169,7 +161,6 @@ These are the error types the API will return when requests fail:
 - - Sample: `curl http://192.168.0.1:5000/questions?page=2`
 
 ```js
-
 {
 
     "success": true,
@@ -193,7 +184,6 @@ These are the error types the API will return when requests fail:
         ]
     
 }
-
 ```
 
 ### POST /questions
@@ -202,7 +192,6 @@ These are the error types the API will return when requests fail:
 - -  Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"searchTerm": "hank"}`
 
 ```js
-
 {
     "success": true,
     "questions": [
@@ -216,7 +205,6 @@ These are the error types the API will return when requests fail:
     ],
     "totalQuestions": 1
 }
-
 ```
 
 - New Question:
@@ -224,7 +212,6 @@ These are the error types the API will return when requests fail:
 - - Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"question":  "What is the answer to everything", "answer":  "42", "difficulty": 1, "category": 1}`
 
 ```js
-
 {
     "success": true
 }
@@ -241,7 +228,6 @@ These are the error types the API will return when requests fail:
     "message": "resource deleted",
     "success": true
 }
-
 ```
 
 ### POST /quizzes
