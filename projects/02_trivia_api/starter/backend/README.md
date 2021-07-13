@@ -73,7 +73,7 @@ set DATABASE_USER=yourpassword
 set DATABASE_USER=yourdatabaseurl
 ```
 
-Linus:
+Linux:
 ```bash
 export DATABASE_USER=youruser
 export DATABASE_USER=yourpassword
@@ -92,7 +92,7 @@ The `--reload` flag will detect file changes and restart the server automaticall
 To run the tests, run from the backend folder in terminal:
 
 On windows
-```
+```bash
 dropdb -U postgres trivia_test
 createdb -U postgres trivia_test
 psql -U postgres trivia_test < trivia.psql
@@ -100,7 +100,7 @@ python test_flaskr.py
 ```
 
 On Linux
-```
+```bash
 sudo su postgres
 dropdb trivia_test
 createdb trivia_test
@@ -130,9 +130,9 @@ These are the error types the API will return when requests fail:
 ## Endpoints
 
 ### GET /categories
-- General:
-- - Returns an object containing all categories, and the success value.
-- - Sample: `curl http://192.168.0.1:5000/categories`
+General:
+- Returns an object containing all categories, and the success value.
+- Sample: `curl http://192.168.0.1:5000/categories`
 
 ```js
 {
@@ -149,9 +149,9 @@ These are the error types the API will return when requests fail:
 ```
 
 ### GET /categories/{id}/questions
-- General:
-- - Returns a list with question objects of the given category id, the current category, number of questions and the success value.
-- - Sample: `curl http://192.168.0.1:5000/categories/3/questions`
+General:
+- Returns a list with question objects of the given category id, the current category, number of questions and the success value.
+- Sample: `curl http://192.168.0.1:5000/categories/3/questions`
 
 ```js
 {
@@ -178,10 +178,10 @@ These are the error types the API will return when requests fail:
 ```
 
 ### GET /questions
-- General:
-- - Returns an object containing all categories, success value, current category, number of total questions, and a list of question objects.
-- - Supports pagination. A request without page parameter returns the first page.
-- - Sample: `curl http://192.168.0.1:5000/questions?page=2`
+General:
+- Returns an object containing all categories, success value, current category, number of total questions, and a list of question objects.
+- Supports pagination. A request without page parameter returns the first page.
+- Sample: `curl http://192.168.0.1:5000/questions?page=2`
 
 ```js
 {
@@ -210,9 +210,9 @@ These are the error types the API will return when requests fail:
 ```
 
 ### POST /questions
-- Search:
-- - Returns a list of question objects, number of total questions and success value.
-- -  Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"searchTerm": "hank"}`
+Search:
+- Returns a list of question objects, number of total questions and success value.
+- Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"searchTerm": "hank"}`
 
 ```js
 {
@@ -230,9 +230,9 @@ These are the error types the API will return when requests fail:
 }
 ```
 
-- New Question:
-- - Creates a new question. Returns a success value.
-- - Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"question":  "What is the answer to everything", "answer":  "42", "difficulty": 1, "category": 1}`
+New Question:
+- Creates a new question. Returns a success value.
+- Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"question":  "What is the answer to everything", "answer":  "42", "difficulty": 1, "category": 1}`
 
 ```js
 {
@@ -242,9 +242,9 @@ These are the error types the API will return when requests fail:
 ```
 
 ### DELETE /questions/{id}
-- General:
-- - Deletes  the question with the given ID, returns an object with "resource deleted" message and success value
-- -  Sample: `curl http://127.0.0.1:5000/questions/9 -X DELETE`
+General:
+- Deletes  the question with the given ID, returns an object with "resource deleted" message and success value
+- Sample: `curl http://127.0.0.1:5000/questions/9 -X DELETE`
 
 ```js
 {
@@ -254,9 +254,9 @@ These are the error types the API will return when requests fail:
 ```
 
 ### POST /quizzes
-- General:
-- - Deletes  the question with the given ID, returns an object with "resource deleted" message and success value
-- -  Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"previous_questions": [1,4,20,15], "quiz_category": {"id": 1, "type": "science"}}`
+General:
+- Deletes  the question with the given ID, returns an object with "resource deleted" message and success value
+- Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"previous_questions": [1,4,20,15], "quiz_category": {"id": 1, "type": "science"}}`
 - - Request body: The request body consists of a list of ids of the previous questions, and an current category object.
 
 ```js
@@ -268,7 +268,7 @@ These are the error types the API will return when requests fail:
     }
 }
 ```
-- - The response is a success value and a single question object.
+The response is a success value and a single question object.
 ```js
 {
     "question": {
