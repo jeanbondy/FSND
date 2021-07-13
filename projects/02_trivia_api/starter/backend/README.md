@@ -57,7 +57,30 @@ psql -U postgres trivia_test < trivia.psql
 
 Ensure you are working using your created virtual environment.
 
-To run the server, execute:
+#### Setting environment variables
+The app defaults to user 'postgres', no password and the url localhost:5432.
+
+You can set other values using these environment variables:
+ - DATABASE_USER
+ - DATABASE_PASSWORD
+ - DATABASE_URL
+
+From the backend folder in terminal run:
+Windows:
+```bash
+set DATABASE_USER=youruser
+set DATABASE_USER=yourpassword
+set DATABASE_USER=yourdatabaseurl
+```
+
+Linus:
+```bash
+export DATABASE_USER=youruser
+export DATABASE_USER=yourpassword
+export DATABASE_USER=yourdatabaseurl
+```
+
+To run the server, execute in the same terminal:
 
 ```bash
 flask run --reload
