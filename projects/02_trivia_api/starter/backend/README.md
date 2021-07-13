@@ -22,15 +22,40 @@ This will install all of the required packages we selected within the `requireme
 
  - [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross origin requests from our frontend server. 
 
+5. **Postgres** - Follow the instructions to install the latest version of Postgres for your platform on [postgresql.org](https://www.postgresql.org/download/)
+
 ### Database Setup
-With Postgres running, restore a database using the trivia.psql file provided. From the backend folder in terminal run:
+With Postgres running, we'll start with a clean slate so that the results are not influenced by previous data. We delete existing databases, create new ones and restore them from the provided trivia.psql file.
+
+We assume the user to be the default user "postgres". If you want to use a different user, adapt the follwing commands accordingly.
+
+From the backend folder in terminal run:
+
+On Linux:
 ```bash
+sudo su postgres
+dropdb --if-exists trivia
+dropdb --if-exists trivia_test
+createdb trivia
+createdb trivia_test
 psql trivia < trivia.psql
+psql trivia_test < trivia.psql
+```
+
+On Windows:
+```bash
+dropdb -U postgres --if-exists trivia
+dropdb -U postgres --if-exists trivia_test
+createdb -U postgres trivia
+createdb -U postgres trivia_test
+psql -U postgres trivia < trivia.psql
+psql -U postgres trivia_test < trivia.psql
+
 ```
 
 ### Running the server
 
-From within the `./src` directory first ensure you are working using your created virtual environment.
+Ensure you are working using your created virtual environment.
 
 To run the server, execute:
 
@@ -40,72 +65,215 @@ flask run --reload
 
 The `--reload` flag will detect file changes and restart the server automatically.
 
-## ToDo Tasks
-These are the files you'd want to edit in the backend:
-
-1. *./backend/flaskr/`__init__.py`*
-2. *./backend/test_flaskr.py*
-
-
-One note before you delve into your tasks: for each endpoint, you are expected to define the endpoint and response data. The frontend will be a plentiful resource because it is set up to expect certain endpoints and response data formats already. You should feel free to specify endpoints in your own way; if you do so, make sure to update the frontend or you will get some unexpected behavior. 
-
-1. Use Flask-CORS to enable cross-domain requests and set response headers. 
-
-
-2. Create an endpoint to handle GET requests for questions, including pagination (every 10 questions). This endpoint should return a list of questions, number of total questions, current category, categories. 
-
-
-3. Create an endpoint to handle GET requests for all available categories. 
-
-
-4. Create an endpoint to DELETE question using a question ID. 
-
-
-5. Create an endpoint to POST a new question, which will require the question and answer text, category, and difficulty score. 
-
-
-6. Create a POST endpoint to get questions based on category. 
-
-
-7. Create a POST endpoint to get questions based on a search term. It should return any questions for whom the search term is a substring of the question. 
-
-
-8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
-
-
-9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
-
-
-
-## Review Comment to the Students
-```
-This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
-
-Endpoints
-GET '/api/v1.0/categories'
-GET ...
-POST ...
-DELETE ...
-
-GET '/api/v1.0/categories'
-- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
-- Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
-
-```
-
-
 ## Testing
-To run the tests, run
+To run the tests, run from the backend folder in terminal:
+
+On windows
 ```
 dropdb -U postgres trivia_test
 createdb -U postgres trivia_test
 psql -U postgres trivia_test < trivia.psql
 python test_flaskr.py
 ```
+
+On Linux
+```
+sudo su postgres
+dropdb trivia_test
+createdb trivia_test
+psql trivia_test < trivia.psql
+python test_flaskr.py
+```
+
+## Error Handling
+
+Errors are returned as JSON objects:
+
+```js
+
+{
+    "success": False, 
+    "error": 404,
+    "message": "resource not found"
+}
+
+```
+
+- 400: Bad request
+- 404: Resource not found
+- 405: Method not allowed
+- 422: Unprocessable
+
+These are the error types the API will return when requests fail:
+
+
+## Endpoints
+
+### GET /categories
+- General:
+- - Returns an object containing all categories, and the success value.
+- - Sample: `curl http://192.168.0.1:5000/categories`
+
+```js
+
+{
+    "categories": {
+        "1": "Science",
+        "2": "Art",
+        "3": "Geography",
+        "4": "History",
+        "5": "Entertainment",
+        "6": "Sports"
+    },
+    "success": true
+}
+
+```
+
+### GET /categories/{id}/questions
+- General:
+- - Returns a list with question objects of the given category id, the current category, number of questions and the success value.
+- - Sample: `curl http://192.168.0.1:5000/categories/3/questions`
+
+```js
+
+{
+    "currentCategory": "Geography",
+    "questions": [
+        {
+            "answer": "Lake Victoria",
+            "category": 3,
+            "difficulty": 2,
+            "id": 13,
+            "question": "What is the largest lake in Africa?"
+        },
+        {
+            "answer": "The Palace of Versailles",
+            "category": 3,
+            "difficulty": 3,
+            "id": 14,
+            "question": "In which royal palace would you find the Hall of Mirrors?"
+        }
+    ],
+    "success": true,
+    "totalQuestions": 2
+}
+
+```
+
+
+### GET /questions
+- General:
+- - Returns an object containing all categories, success value, current category, number of total questions, and a list of question objects.
+- - Supports pagination. A request without page parameter returns the first page.
+- - Sample: `curl http://192.168.0.1:5000/questions?page=2`
+
+```js
+
+{
+
+    "success": true,
+    "totalQuestions": 26,
+     "categories": {
+        "1": "Science",
+        "2": "Art",
+        "3": "Geography",
+        "4": "History",
+        "5": "Entertainment",
+        "6": "Sports"
+    },
+    "questions": [
+        {
+            "answer": "One",
+            "category": 2,
+            "difficulty": 4,
+            "id": 18,
+            "question": "How many paintings did Van Gogh sell in his lifetime?"
+        }
+        ]
+    
+}
+
+```
+
+### POST /questions
+- Search:
+- - Returns a list of question objects, number of total questions and success value.
+- -  Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"searchTerm": "hank"}`
+
+```js
+
+{
+    "success": true,
+    "questions": [
+        {
+            "answer": "Apollo 13",
+            "category": 5,
+            "difficulty": 4,
+            "id": 2,
+            "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+        }
+    ],
+    "totalQuestions": 1
+}
+
+```
+
+- New Question:
+- - Creates a new question. Returns a success value.
+- - Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"question":  "What is the answer to everything", "answer":  "42", "difficulty": 1, "category": 1}`
+
+```js
+
+{
+    "success": true
+}
+
+```
+
+### DELETE /questions/{id}
+- General:
+- - Deletes  the question with the given ID, returns an object with "resource deleted" message and success value
+- -  Sample: `curl http://127.0.0.1:5000/questions/9 -X DELETE`
+
+```js
+{
+    "message": "resource deleted",
+    "success": true
+}
+
+```
+
+### POST /quizzes
+- General:
+- - Deletes  the question with the given ID, returns an object with "resource deleted" message and success value
+- -  Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d {"previous_questions": [1,4,20,15], "quiz_category": {"id": 1, "type": "science"}}`
+- - Request body: The request body consists of a list of ids of the previous questions, and an current category object.
+
+```js
+{
+    "previous_questions": [1,4,20,15],
+    "quiz_category": {
+        "id": 1,
+        "type": "science"
+    }
+}
+```
+- - The response is a success value and a single question object.
+```js
+{
+    "question": {
+        "answer": "Blood",
+        "category": 1,
+        "difficulty": 4,
+        "id": 22,
+        "question": "Hematology is a branch of medicine involving the study of what?"
+    },
+    "success": true
+}
+
+```
+
+
+
+
